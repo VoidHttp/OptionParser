@@ -36,7 +36,7 @@ public class OptionParser extends OptionHolder {
                     .build());
                 System.out.println(generateHelp());
             } else
-                System.out.println("error: unrecognized arguments: " + String.join(" ", invalidArguments) + " - " + invalidArguments.size() + " = " + invalidArguments);
+                System.out.println("error: unrecognized arguments: " + String.join(" ", invalidArguments));
             System.exit(0);
         }
         try {
