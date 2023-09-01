@@ -27,7 +27,16 @@ public class OptionParser extends OptionHolder {
         } catch (UnknownKeyError e) {
             System.out.println(generateUsage());
             List<String> invalidArguments = getInvalidArguments(options.getData().keySet());
-            System.out.println("error: unrecognized arguments: " + String.join(" ", invalidArguments));
+            if (invalidArguments.isEmpty()) {
+                getOptions().add(0, new OptionBuilder()
+                    .setName("help")
+                    .setType(OptionType.TEXT)
+                    .setAliases("-h", "--help")
+                    .setHelp("show this help message and exit")
+                    .build());
+                System.out.println(generateHelp());
+            } else
+                System.out.println("error: unrecognized arguments: " + String.join(" ", invalidArguments) + " - " + invalidArguments.size() + " = " + invalidArguments);
             System.exit(0);
         }
         try {
@@ -66,7 +75,7 @@ public class OptionParser extends OptionHolder {
     private List<String> getInvalidArguments(Set<String> arguments) {
         List<String> invalid = new ArrayList<>();
         for (String argument : arguments) {
-            if (!testKeyUsed(argument))
+            if (!testKeyUsed(argument) && !argument.isEmpty())
                 invalid.add(argument);
         }
         return invalid;
